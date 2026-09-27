@@ -16,7 +16,7 @@ local DARK_HUB_LOGO = "rbxassetid://76208826954157"
 local HUB_BACKGROUND = "rbxassetid://129581125553650"
 
 local KEY_CORRETA = "DARKZINNMVP"
-local DISCORD_LINK = "https://discord.gg/9CR5Fnqrv2"
+local DISCORD_LINK = "https://discord.gg/HGnARQJZhx"
 local VERSION = "v1"
 
 local PLATFORM_SCALES = { mobile = 0.55, pc = 1.00 }
@@ -53,7 +53,9 @@ local C = {
     success     = Color3.fromRGB(90, 230, 140),
     danger      = Color3.fromRGB(255, 90, 110),
     warning     = Color3.fromRGB(255, 200, 110),
-    gold        = Color3.fromRGB(255, 190, 90)
+    gold        = Color3.fromRGB(255, 190, 90),
+    discord     = Color3.fromRGB(88, 101, 242),
+    discordGlow = Color3.fromRGB(114, 137, 218)
 }
 
 local currentLang = "pt-BR"
@@ -67,6 +69,9 @@ local Translations = {
         keyPlaceholder = "Insira sua key...", confirm = "Confirmar", paste = "Colar",
         invalidKey = "Key inválida. Tente novamente.", validKey = "Key válida! Continuando...",
         help = "Precisa de ajuda? Entre no servidor do Discord",
+        keyInDiscord = "A KEY ESTÁ DISPONÍVEL NO DISCORD!",
+        getKeyDiscord = "Pegar Key no Discord",
+        linkCopied = "Link copiado! Abrindo...",
         platformTitle = "Escolha sua plataforma", platformSubtitle = "Isso ajusta o tamanho da interface",
         mobile = "Celular", mobileDesc = "Interface compacta",
         pc = "Computador", pcDesc = "Interface completa",
@@ -89,6 +94,9 @@ local Translations = {
         keyPlaceholder = "Enter your key...", confirm = "Confirm", paste = "Paste",
         invalidKey = "Invalid key. Try again.", validKey = "Valid key! Continuing...",
         help = "Need help? Join the Discord server",
+        keyInDiscord = "THE KEY IS AVAILABLE ON DISCORD!",
+        getKeyDiscord = "Get Key on Discord",
+        linkCopied = "Link copied! Opening...",
         platformTitle = "Choose your platform", platformSubtitle = "This adjusts the interface size",
         mobile = "Mobile", mobileDesc = "Compact interface",
         pc = "Computer", pcDesc = "Full interface",
@@ -111,6 +119,9 @@ local Translations = {
         keyPlaceholder = "Ingresa tu key...", confirm = "Confirmar", paste = "Pegar",
         invalidKey = "Key inválida. Inténtalo de nuevo.", validKey = "¡Key válida! Continuando...",
         help = "¿Necesitas ayuda? Únete al servidor de Discord",
+        keyInDiscord = "¡LA KEY ESTÁ DISPONIBLE EN DISCORD!",
+        getKeyDiscord = "Obtener Key en Discord",
+        linkCopied = "¡Enlace copiado! Abriendo...",
         platformTitle = "Elige tu plataforma", platformSubtitle = "Esto ajusta el tamaño de la interfaz",
         mobile = "Móvil", mobileDesc = "Interfaz compacta",
         pc = "Computadora", pcDesc = "Interfaz completa",
@@ -141,18 +152,23 @@ end
 local games = {
     {
         name = "Steal An Egg",
+        localizedNames = {
+            ["pt-BR"] = "Roube Um Ovo",
+            ["en-US"] = "Steal An Egg",
+            ["es-ES"] = "Steal An Egg"
+        },
         color = Color3.fromRGB(255, 90, 90),
         placeId = 107780707777162,
         tag = "ORIGINAL",
         scripts = {
-            { name = "Miranda Hub",        link = "https://raw.githubusercontent.com/miirandahub/loader/refs/heads/main/stealaeggs" },
-            { name = "Miranda AFK Pago",   link = "https://api.luarmor.net/files/v4/loaders/6b07a458832f08b2314f706f14723212.lua" },
-            { name = "Lennon Hub",         link = "https://raw.githubusercontent.com/lennonxscripts/lennonfarmv2/refs/heads/main/stealanegg" },
-            { name = "Lennon Auto Farm",   link = "https://api.luarmor.net/files/v4/loaders/4595fe31a5f7a8b4f4dd7071f3119ef7.lua" },
+            { name = "Miranda Hub",        link = "https://raw.githubusercontent.com/miirandahub/loader/refs/heads/main/stealeggies" },
+            { name = "Miranda Hub AFK",    link = "https://raw.githubusercontent.com/miirandahub/loader/refs/heads/main/afkk" },
+            { name = "Lennon Hub",         link = "https://raw.githubusercontent.com/lennonxscripts/lennonhubv4/refs/heads/main/stealanegg" },
+            { name = "Lennon Auto Farm",   link = "https://raw.githubusercontent.com/lennonxscripts/lennonfarmv2/refs/heads/main/stealanegg" },
             { name = "LKZ Hub",            link = "https://api.luarmor.net/files/v4/loaders/65bf3459d87ba3ac46350e154b640929.lua" },
             { name = "BK's Hub",           link = "https://api.luarmor.net/files/v4/loaders/9ee4edde227ac85f50872bf9e4226508.lua" },
             { name = "Fake Admin",         link = "https://raw.githubusercontent.com/Dayvinksthik/Script/refs/heads/main/Games/JoshBNS-Crack.lua" },
-            { name = "Chilli Hub",         link = "https://pastefy.app/Eu0Ro4H8/raw" },
+            { name = "Chilli Hub",         link = "https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua" },
             { name = "Server PV",          link = "https://pastefy.app/YoZocJ8O/raw" },
             { name = "FYY Hub",            link = "https://raw.githubusercontent.com/napun87/stealanegg/refs/heads/main/fly.lua" },
             { name = "FoxName Hub",        link = "https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fn-stealanegg.lua" },
@@ -276,6 +292,14 @@ local function gameThumbUrl(placeId, gameName)
         return GAME_IMAGES[gameName]
     end
     return "rbxthumb://type=GameIcon&id=" .. tostring(placeId) .. "&w=150&h=150"
+end
+
+-- ✅ Retorna o nome do jogo traduzido para o idioma atual
+local function gameName(g)
+    if g.localizedNames and g.localizedNames[currentLang] then
+        return g.localizedNames[currentLang]
+    end
+    return g.name
 end
 
 -- ============================================================
@@ -454,7 +478,7 @@ _G.ShowKeyScreen = function()
     }, Root)
 
     local KeyCard = criar("Frame", {
-        Size = UDim2.new(0, 340, 0, 330),
+        Size = UDim2.new(0, 360, 0, 460),
         Position = UDim2.new(0.5, 0, 0.5, 0),
         AnchorPoint = Vector2.new(0.5, 0.5),
         BackgroundColor3 = C.panel,
@@ -470,7 +494,7 @@ _G.ShowKeyScreen = function()
 
     local KeyIcon = criar("Frame", {
         Size = UDim2.new(0, 60, 0, 60),
-        Position = UDim2.new(0.5, -30, 0, 25),
+        Position = UDim2.new(0.5, -30, 0, 22),
         BackgroundColor3 = C.panelLight,
         BorderSizePixel = 0,
         ZIndex = 102
@@ -490,7 +514,7 @@ _G.ShowKeyScreen = function()
 
     criar("TextLabel", {
         Size = UDim2.new(1, 0, 0, 24),
-        Position = UDim2.new(0, 0, 0, 98),
+        Position = UDim2.new(0, 0, 0, 92),
         BackgroundTransparency = 1,
         Text = T("keyTitle"),
         TextColor3 = C.text,
@@ -501,7 +525,7 @@ _G.ShowKeyScreen = function()
 
     criar("TextLabel", {
         Size = UDim2.new(1, 0, 0, 16),
-        Position = UDim2.new(0, 0, 0, 124),
+        Position = UDim2.new(0, 0, 0, 118),
         BackgroundTransparency = 1,
         Text = T("keySubtitle"),
         TextColor3 = C.textDim,
@@ -512,7 +536,7 @@ _G.ShowKeyScreen = function()
 
     local InputBox = criar("Frame", {
         Size = UDim2.new(1, -50, 0, 44),
-        Position = UDim2.new(0, 25, 0, 152),
+        Position = UDim2.new(0, 25, 0, 146),
         BackgroundColor3 = C.panelLight,
         BorderSizePixel = 0,
         ZIndex = 102
@@ -558,7 +582,7 @@ _G.ShowKeyScreen = function()
 
     local ErrorLabel = criar("TextLabel", {
         Size = UDim2.new(1, 0, 0, 18),
-        Position = UDim2.new(0, 0, 0, 204),
+        Position = UDim2.new(0, 0, 0, 198),
         BackgroundTransparency = 1,
         Text = "",
         TextColor3 = C.danger,
@@ -569,7 +593,7 @@ _G.ShowKeyScreen = function()
 
     local ConfirmBtn = criar("TextButton", {
         Size = UDim2.new(1, -50, 0, 42),
-        Position = UDim2.new(0, 25, 0, 230),
+        Position = UDim2.new(0, 25, 0, 224),
         BackgroundColor3 = C.accent,
         BorderSizePixel = 0,
         Text = T("confirm"),
@@ -584,9 +608,85 @@ _G.ShowKeyScreen = function()
     ConfirmBtn.MouseEnter:Connect(function() tween(ConfirmBtn, 0.15, { BackgroundColor3 = C.accentGlow }) end)
     ConfirmBtn.MouseLeave:Connect(function() tween(ConfirmBtn, 0.15, { BackgroundColor3 = C.accent }) end)
 
+    -- ============================================================
+    -- DIVISOR "OU" / "OR"
+    -- ============================================================
+    criar("Frame", {
+        Size = UDim2.new(1, -60, 0, 1),
+        Position = UDim2.new(0, 30, 0, 282),
+        BackgroundColor3 = C.border,
+        BorderSizePixel = 0,
+        ZIndex = 102
+    }, KeyCard)
+
+    -- ============================================================
+    -- AVISO: KEY ESTÁ NO DISCORD
+    -- ============================================================
     criar("TextLabel", {
-        Size = UDim2.new(1, 0, 0, 18),
-        Position = UDim2.new(0, 0, 0, 288),
+        Size = UDim2.new(1, -50, 0, 18),
+        Position = UDim2.new(0, 25, 0, 298),
+        BackgroundTransparency = 1,
+        Text = T("keyInDiscord"),
+        TextColor3 = C.gold,
+        Font = Enum.Font.GothamBold,
+        TextSize = 12,
+        ZIndex = 102
+    }, KeyCard)
+
+    -- ============================================================
+    -- BOTÃO: PEGAR KEY NO DISCORD (copia + abre o link)
+    -- ============================================================
+    local DiscordBtn = criar("TextButton", {
+        Size = UDim2.new(1, -50, 0, 46),
+        Position = UDim2.new(0, 25, 0, 322),
+        BackgroundColor3 = C.discord,
+        BorderSizePixel = 0,
+        Text = T("getKeyDiscord"),
+        TextColor3 = Color3.fromRGB(255, 255, 255),
+        Font = Enum.Font.GothamBold,
+        TextSize = 14,
+        AutoButtonColor = false,
+        ZIndex = 103
+    }, KeyCard)
+    corner(DiscordBtn, 10)
+    stroke(DiscordBtn, C.discordGlow, 1.5, 0.2)
+
+    DiscordBtn.MouseEnter:Connect(function()
+        tween(DiscordBtn, 0.15, { BackgroundColor3 = C.discordGlow })
+    end)
+    DiscordBtn.MouseLeave:Connect(function()
+        tween(DiscordBtn, 0.15, { BackgroundColor3 = C.discord })
+    end)
+
+    DiscordBtn.MouseButton1Click:Connect(function()
+        -- Copia o link para a área de transferência
+        if setclipboard then
+            pcall(function() setclipboard(DISCORD_LINK) end)
+        end
+        -- Feedback visual
+        DiscordBtn.Text = T("linkCopied")
+        DiscordBtn.BackgroundColor3 = C.success
+        task.wait(1.8)
+        DiscordBtn.Text = T("getKeyDiscord")
+        DiscordBtn.BackgroundColor3 = C.discord
+        -- Abre o navegador
+        abrirLink(DISCORD_LINK)
+    end)
+
+    criar("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 16),
+        Position = UDim2.new(0, 0, 0, 384),
+        BackgroundTransparency = 1,
+        Text = "discord.gg/HGnARQJZhx",
+        TextColor3 = C.discordGlow,
+        Font = Enum.Font.GothamBold,
+        TextSize = 11,
+        ZIndex = 102
+    }, KeyCard)
+
+    criar("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 14),
+        Position = UDim2.new(0, 0, 0, 406),
         BackgroundTransparency = 1,
         Text = T("help"),
         TextColor3 = C.textDim,
@@ -595,15 +695,18 @@ _G.ShowKeyScreen = function()
         ZIndex = 102
     }, KeyCard)
 
-    local SupportBtn = criar("TextButton", {
-        Size = UDim2.new(1, 0, 0, 18),
-        Position = UDim2.new(0, 0, 0, 288),
+    criar("TextLabel", {
+        Size = UDim2.new(1, 0, 0, 14),
+        Position = UDim2.new(0, 0, 0, 424),
         BackgroundTransparency = 1,
-        Text = "",
-        ZIndex = 103
+        Text = VERSION .. " - " .. T("madeBy"),
+        TextColor3 = C.textDim,
+        Font = Enum.Font.Gotham,
+        TextSize = 9,
+        ZIndex = 102
     }, KeyCard)
-    SupportBtn.MouseButton1Click:Connect(function() abrirLink(DISCORD_LINK) end)
 
+    -- DRAG
     local dragging, dragStart, startPos
     KeyCard.InputBegan:Connect(function(input)
         if input.UserInputType == Enum.UserInputType.MouseButton1 or input.UserInputType == Enum.UserInputType.Touch then
@@ -1493,7 +1596,7 @@ _G.ShowHubScreen = function(uiScale)
             Size = UDim2.new(1, -20, 0, 20),
             Position = UDim2.new(0, 10, 0, 88),
             BackgroundTransparency = 1,
-            Text = g.name,
+            Text = gameName(g),
             TextColor3 = C.text,
             Font = Enum.Font.GothamBold,
             TextSize = 13,
@@ -1546,7 +1649,7 @@ _G.ShowHubScreen = function(uiScale)
     corner(searchBar, 12)
     stroke(searchBar, C.border, 1, 0.3)
 
-    criar("TextBox", {
+    local searchInput = criar("TextBox", {
         Size = UDim2.new(1, -30, 1, 0),
         Position = UDim2.new(0, 15, 0, 0),
         BackgroundTransparency = 1,
@@ -1623,10 +1726,11 @@ _G.ShowHubScreen = function(uiScale)
         }, thumb)
 
         criar("TextLabel", {
+            Name = "GameName",
             Size = UDim2.new(1, -80, 0, 18),
             Position = UDim2.new(0, 68, 0, 16),
             BackgroundTransparency = 1,
-            Text = g.name,
+            Text = gameName(g),
             TextColor3 = C.text,
             Font = Enum.Font.GothamBold,
             TextSize = 12,
@@ -1658,6 +1762,20 @@ _G.ShowHubScreen = function(uiScale)
             if _G.OpenGame then _G.OpenGame(g) end
         end)
     end
+
+    -- Busca (considera nome interno + nome traduzido)
+    searchInput:GetPropertyChangedSignal("Text"):Connect(function()
+        local q = string.lower(searchInput.Text)
+        for _, row in ipairs(gamesScroll:GetChildren()) do
+            if row:IsA("TextButton") then
+                local nameLabel = row:FindFirstChild("GameName")
+                if nameLabel then
+                    local match = (q == "" or string.find(string.lower(nameLabel.Text), q, 1, true))
+                    row.Visible = match
+                end
+            end
+        end
+    end)
 
     -- SCRIPTS DO JOGO
     _G.OpenGame = function(g)
@@ -1694,7 +1812,7 @@ _G.ShowHubScreen = function(uiScale)
             Size = UDim2.new(1, -120, 0, 24),
             Position = UDim2.new(0, 120, 0, 20),
             BackgroundTransparency = 1,
-            Text = g.name,
+            Text = gameName(g),
             TextColor3 = C.text,
             Font = Enum.Font.GothamBold,
             TextSize = 18,
