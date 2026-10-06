@@ -170,7 +170,7 @@ local games = {
             { name = "Fake Admin",         link = "https://raw.githubusercontent.com/Dayvinksthik/Script/refs/heads/main/Games/JoshBNS-Crack.lua" },
             { name = "Chilli Hub",         link = "https://raw.githubusercontent.com/tienkhanh1/spicy/main/Chilli.lua" },
             { name = "Server PV",          link = "https://pastefy.app/YoZocJ8O/raw" },
-            { name = "FYY Hub",            link = "https://raw.githubusercontent.com/napun87/stealanegg/refs/heads/main/fly.lua" },
+            { name = "FYY Hub",            link = "https://FyyCommunity.com" },
             { name = "FoxName Hub",        link = "https://raw.githubusercontent.com/caomod2077/Script/refs/heads/main/Fn-stealanegg.lua" },
             { name = "On Hub",             link = "https://raw.githubusercontent.com/davizin713/ONhub/refs/heads/main/script.lua" },
             { name = "Clover Hub",         link = "https://cloverhub.app/clover.lua" },
@@ -294,7 +294,6 @@ local function gameThumbUrl(placeId, gameName)
     return "rbxthumb://type=GameIcon&id=" .. tostring(placeId) .. "&w=150&h=150"
 end
 
--- ✅ Retorna o nome do jogo traduzido para o idioma atual
 local function gameName(g)
     if g.localizedNames and g.localizedNames[currentLang] then
         return g.localizedNames[currentLang]
@@ -608,9 +607,7 @@ _G.ShowKeyScreen = function()
     ConfirmBtn.MouseEnter:Connect(function() tween(ConfirmBtn, 0.15, { BackgroundColor3 = C.accentGlow }) end)
     ConfirmBtn.MouseLeave:Connect(function() tween(ConfirmBtn, 0.15, { BackgroundColor3 = C.accent }) end)
 
-    -- ============================================================
-    -- DIVISOR "OU" / "OR"
-    -- ============================================================
+    -- DIVISOR
     criar("Frame", {
         Size = UDim2.new(1, -60, 0, 1),
         Position = UDim2.new(0, 30, 0, 282),
@@ -619,9 +616,7 @@ _G.ShowKeyScreen = function()
         ZIndex = 102
     }, KeyCard)
 
-    -- ============================================================
     -- AVISO: KEY ESTÁ NO DISCORD
-    -- ============================================================
     criar("TextLabel", {
         Size = UDim2.new(1, -50, 0, 18),
         Position = UDim2.new(0, 25, 0, 298),
@@ -633,9 +628,7 @@ _G.ShowKeyScreen = function()
         ZIndex = 102
     }, KeyCard)
 
-    -- ============================================================
-    -- BOTÃO: PEGAR KEY NO DISCORD (copia + abre o link)
-    -- ============================================================
+    -- BOTÃO: PEGAR KEY NO DISCORD
     local DiscordBtn = criar("TextButton", {
         Size = UDim2.new(1, -50, 0, 46),
         Position = UDim2.new(0, 25, 0, 322),
@@ -659,17 +652,14 @@ _G.ShowKeyScreen = function()
     end)
 
     DiscordBtn.MouseButton1Click:Connect(function()
-        -- Copia o link para a área de transferência
         if setclipboard then
             pcall(function() setclipboard(DISCORD_LINK) end)
         end
-        -- Feedback visual
         DiscordBtn.Text = T("linkCopied")
         DiscordBtn.BackgroundColor3 = C.success
         task.wait(1.8)
         DiscordBtn.Text = T("getKeyDiscord")
         DiscordBtn.BackgroundColor3 = C.discord
-        -- Abre o navegador
         abrirLink(DISCORD_LINK)
     end)
 
@@ -1763,7 +1753,7 @@ _G.ShowHubScreen = function(uiScale)
         end)
     end
 
-    -- Busca (considera nome interno + nome traduzido)
+    -- Busca
     searchInput:GetPropertyChangedSignal("Text"):Connect(function()
         local q = string.lower(searchInput.Text)
         for _, row in ipairs(gamesScroll:GetChildren()) do
